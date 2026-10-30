@@ -27,7 +27,7 @@ async function main() {
   const user = await prisma.user.create({
     data: {
       name: process.env.SEED_USER_NAME || "Daniel Palacios",
-      email: process.env.SEED_USER_EMAIL || "l00056071@espe.edu.ec",
+      email: process.env.SEED_USER_EMAIL || "depalacios2@espe.edu.ec",
       password: userPassword,
       role: "USER",
     },

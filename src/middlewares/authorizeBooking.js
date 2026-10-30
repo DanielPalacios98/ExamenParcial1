@@ -6,6 +6,7 @@ const prisma = createPrismaClient();
 async function authorizeBooking(req, res, next) {
   try {
     const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return next(new HttpError(404, "Reserva no encontrada"));
     const booking = await prisma.booking.findUnique({ where: { id } });
     if (!booking) return next(new HttpError(404, "Reserva no encontrada"));
     if (req.user.role !== "ADMIN" && booking.userId !== Number(req.user.id)) {

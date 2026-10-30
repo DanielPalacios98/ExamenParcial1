@@ -5,91 +5,530 @@
     "description": "Evaluación P1 - API de reservas de canchas - L00056071"
   },
   "variable": [
-    { "key": "newEmail", "value": "nuevo{{timestamp}}@example.com" }
+    {
+      "key": "newEmail",
+      "value": "nuevo{{timestamp}}@example.com"
+    }
   ],
   "item": [
     {
       "name": "01 Auth - register válido",
-      "event": [{ "listen": "prerequest", "script": { "exec": ["pm.variables.set('timestamp', Date.now());"] } }],
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Nuevo Usuario\",\n  \"email\": \"{{newEmail}}\",\n  \"password\": \"Clave123*\"\n}" }, "url": "{{baseUrl}}/api/auth/register" }
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.variables.set('timestamp', Date.now());"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Nuevo Usuario\",\n  \"email\": \"{{newEmail}}\",\n  \"password\": \"Clave123*\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      }
     },
     {
       "name": "02 Auth - register campos faltantes (400)",
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"faltante@example.com\"\n}" }, "url": "{{baseUrl}}/api/auth/register" }
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"faltante@example.com\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      }
     },
     {
       "name": "03 Auth - register email inválido (400)",
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Usuario Inválido\",\n  \"email\": \"no-es-email\",\n  \"password\": \"Clave123*\"\n}" }, "url": "{{baseUrl}}/api/auth/register" }
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Usuario Inválido\",\n  \"email\": \"no-es-email\",\n  \"password\": \"Clave123*\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      }
     },
     {
-      "name": "04 Auth - login admin",
-      "event": [{ "listen": "test", "script": { "exec": ["const json = pm.response.json();", "pm.environment.set('adminToken', json.token);", "pm.environment.set('token', json.token);"] } }],
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"paulo.galarza@example.com\",\n  \"password\": \"admin123\"\n}" }, "url": "{{baseUrl}}/api/auth/login" }
+      "name": "04 Auth - register email ya registrado (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Otro Paulo\",\n  \"email\": \"paulo.galarza@example.com\",\n  \"password\": \"admin123\"\n}"
+        }
+      }
     },
     {
-      "name": "05 Auth - login usuario",
-      "event": [{ "listen": "test", "script": { "exec": ["const json = pm.response.json();", "pm.environment.set('userToken', json.token);"] } }],
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"l00056071@espe.edu.ec\",\n  \"password\": \"usuario123\"\n}" }, "url": "{{baseUrl}}/api/auth/login" }
+      "name": "05 Auth - login admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.environment.set('adminToken', json.token);",
+              "pm.environment.set('token', json.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"paulo.galarza@example.com\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
     },
     {
-      "name": "06 Auth - login incorrecto (400)",
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"paulo.galarza@example.com\",\n  \"password\": \"incorrecta\"\n}" }, "url": "{{baseUrl}}/api/auth/login" }
+      "name": "06 Auth - login usuario",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.environment.set('userToken', json.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"depalacios2@espe.edu.ec\",\n  \"password\": \"usuario123\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
     },
     {
-      "name": "07 Auth - protected sin token (401)",
-      "request": { "method": "GET", "url": "{{baseUrl}}/api/auth/protected-route" }
+      "name": "07 Auth - login incorrecto (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"paulo.galarza@example.com\",\n  \"password\": \"incorrecta\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
     },
     {
-      "name": "08 Auth - protected token inválido (403)",
-      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer token-invalido" }], "url": "{{baseUrl}}/api/auth/protected-route" }
+      "name": "08 Auth - protected con token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/protected-route"
+      }
     },
     {
-      "name": "09 Admin - crear horario",
-      "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"court\": \"Básquet 1\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"10:00\"\n}" }, "url": "{{baseUrl}}/api/admin/schedules" }
+      "name": "09 Auth - protected sin token (401)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/auth/protected-route"
+      }
     },
     {
-      "name": "10 Admin - crear horario sin token (401)",
-      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"court\": \"Tenis 2\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"10:00\"\n}" }, "url": "{{baseUrl}}/api/admin/schedules" }
+      "name": "10 Auth - protected token inválido (403)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer token-invalido"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/protected-route"
+      }
     },
     {
-      "name": "11 Admin - crear horario como USER (403)",
-      "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"court\": \"Tenis 2\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"10:00\"\n}" }, "url": "{{baseUrl}}/api/admin/schedules" }
+      "name": "11 Admin - crear horario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"court\": \"Básquet 1\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"10:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/admin/schedules"
+      }
     },
     {
-      "name": "12 Admin - listar reservas",
-      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/bookings" }
+      "name": "12 Admin - crear horario sin token (401)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"court\": \"Tenis 2\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"10:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/admin/schedules"
+      }
     },
     {
-      "name": "13 Bookings - crear reserva",
-      "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"date\": \"2026-11-12\",\n  \"scheduleId\": 1\n}" }, "url": "{{baseUrl}}/api/bookings" }
+      "name": "13 Admin - crear horario como USER (403)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"court\": \"Tenis 2\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"10:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/admin/schedules"
+      }
     },
     {
-      "name": "14 Bookings - horario ocupado (400)",
-      "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"date\": \"2026-11-11\",\n  \"scheduleId\": 1\n}" }, "url": "{{baseUrl}}/api/bookings" }
+      "name": "14 Admin - listar reservas",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/admin/bookings"
+      }
     },
     {
-      "name": "15 Bookings - consultar dueño",
-      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }], "url": "{{baseUrl}}/api/bookings/{{bookingId}}" }
+      "name": "15 Admin - listar reservas sin token (401)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/admin/bookings"
+      }
     },
     {
-      "name": "16 Bookings - consultar reserva ajena (403)",
-      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }], "url": "{{baseUrl}}/api/bookings/{{adminBookingId}}" }
+      "name": "16 Admin - listar reservas como USER (403)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/admin/bookings"
+      }
     },
     {
-      "name": "17 Bookings - actualizar",
-      "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"date\": \"2026-11-13\",\n  \"scheduleId\": 1\n}" }, "url": "{{baseUrl}}/api/bookings/{{bookingId}}" }
+      "name": "17 Bookings - crear reserva",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"2026-11-12\",\n  \"scheduleId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/bookings"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.environment.set('createdBookingId', json.id);"
+            ]
+          }
+        }
+      ]
     },
     {
-      "name": "18 Bookings - eliminar",
-      "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/bookings/{{adminBookingId}}" }
+      "name": "18 Bookings - horario ocupado (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"2026-11-11\",\n  \"scheduleId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/bookings"
+      }
     },
     {
-      "name": "19 Users - mis reservas",
-      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }], "url": "{{baseUrl}}/api/users/{{userId}}/bookings" }
+      "name": "19 Bookings - consultar dueño",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{bookingId}}"
+      }
     },
     {
-      "name": "20 Users - reservas de otro usuario (403)",
-      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }], "url": "{{baseUrl}}/api/users/1/bookings" }
+      "name": "20 Bookings - consultar reserva ajena (403)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{adminBookingId}}"
+      }
+    },
+    {
+      "name": "21 Bookings - consultar reserva que no existe (404)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/99999"
+      }
+    },
+    {
+      "name": "22 Bookings - actualizar",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"2026-11-13\",\n  \"scheduleId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/bookings/{{bookingId}}"
+      }
+    },
+    {
+      "name": "23 Bookings - actualizar a horario ocupado (400)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{bookingId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"2026-11-11\",\n  \"scheduleId\": 2\n}"
+        }
+      }
+    },
+    {
+      "name": "24 Bookings - actualizar reserva ajena (403)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{adminBookingId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"2026-11-14\",\n  \"scheduleId\": 2\n}"
+        }
+      }
+    },
+    {
+      "name": "25 Bookings - actualizar reserva que no existe (404)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/99999",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"2026-11-14\",\n  \"scheduleId\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "26 Bookings - eliminar reserva ajena (403)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{adminBookingId}}"
+      }
+    },
+    {
+      "name": "27 Bookings - eliminar (204)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/{{createdBookingId}}"
+      }
+    },
+    {
+      "name": "28 Bookings - eliminar reserva que no existe (404)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/bookings/99999"
+      }
+    },
+    {
+      "name": "29 Users - mis reservas",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{userId}}/bookings"
+      }
+    },
+    {
+      "name": "30 Users - reservas de otro usuario (403)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/1/bookings"
+      }
     }
   ]
 }
